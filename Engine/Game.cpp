@@ -27,7 +27,7 @@ Game::Game( MainWindow& wnd )
 	wnd( wnd ),
 	gfx( wnd ),
 	menu( { gfx.GetRect().GetCenter().x,200 } ),
-	field( gfx.GetRect().GetCenter(),4 )
+	field( gfx.GetRect().GetCenter() )
 {
 }
 
@@ -72,9 +72,17 @@ void Game::UpdateModel()
 			switch( s )
 			{
 			case SelectionMenu::Size::Small:
-			case SelectionMenu::Size::Medium:
-			case SelectionMenu::Size::Large:
+				field.SetSize( MemeField::Size::Small );
 				state = State::Memesweeper;
+				break;
+			case SelectionMenu::Size::Medium:
+				field.SetSize( MemeField::Size::Medium );
+				state = State::Memesweeper;
+				break;
+			case SelectionMenu::Size::Large:
+				field.SetSize( MemeField::Size::Large );
+				state = State::Memesweeper;
+				break;
 			}
 		}
 	}

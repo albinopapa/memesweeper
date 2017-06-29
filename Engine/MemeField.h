@@ -12,6 +12,10 @@ public:
 		Winrar,
 		Memeing
 	};
+	enum class Size
+	{
+		Small, Medium, Large
+	};
 private:
 	class Tile
 	{
@@ -38,13 +42,18 @@ private:
 		int nNeighborMemes = -1;
 	};
 public:
-	MemeField( const Vei2& center,int nMemes );
+	MemeField( const Vei2& center );
+	~MemeField();
+
 	void Draw( Graphics& gfx ) const;
 	RectI GetRect() const;
 	void OnRevealClick( const Vei2& screenPos );
 	void OnFlagClick( const Vei2& screenPos );
 	State GetState() const;
+	void SetSize( Size FieldSize );
+	
 private:
+	void SetupField();
 	void RevealTile( const Vei2& gridPos );
 	Tile& TileAt( const Vei2& gridPos );
 	const Tile& TileAt( const Vei2& gridPos ) const;
@@ -52,12 +61,26 @@ private:
 	int CountNeighborMemes( const Vei2& gridPos );
 	bool GameIsWon() const;
 private:
-	static constexpr int width = 8;
-	static constexpr int height = 6;
+	static constexpr int sm_width = 8;
+	static constexpr int sm_height = 6;
+	static constexpr int sm_nMemes = 4;
+
+	static constexpr int md_width = 16;
+	static constexpr int md_height = 12;
+	static constexpr int md_nMemes = sm_nMemes * 4;
+
+	static constexpr int lg_width = 32;
+	static constexpr int lg_height = 24;
+	static constexpr int lg_nMemes = md_nMemes * 4;
+
 	static constexpr int borderThickness = 10;
 	static constexpr Color borderColor = Colors::Blue;
+
+	int width = sm_width, height = sm_height;
+
 	Sound sndLose = Sound( L"spayed.wav" );
-	Vei2 topLeft;
+	Vei2 topLeft, center;
 	State state = State::Memeing;
-	Tile field[width * height];
+	Tile *pField = nullptr;
+	int nMemes = 0;
 };
